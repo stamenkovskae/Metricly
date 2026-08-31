@@ -1,6 +1,7 @@
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Home } from './components/home/home';
+import { NgIf } from "../../node_modules/@angular/common/types/_common_module-chunk";
 
 @Component({
   imports: [RouterOutlet, Home],
