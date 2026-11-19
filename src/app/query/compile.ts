@@ -18,8 +18,12 @@ function matcher({ by, value }: Filter): string {
   return xx ? `${LABEL[by]}=~"${xx[1]}.."` : `${LABEL[by]}="${escape(value)}"`;
 }
 
+// Prometheus' own scrape (/metrics) is not user traffic; skip it unless the user asks for a route.
+const NO_SCRAPE = `${LABEL.endpoint}!="/metrics"`;
+
 function selector(metric: string, filters: Filter[], extra: string[] = []): string {
   const m = [...filters.map(matcher), ...extra];
+  if (!filters.some((f) => f.by === 'endpoint')) m.push(NO_SCRAPE);
   return m.length ? `${metric}{${m.join(',')}}` : metric;
 }
 

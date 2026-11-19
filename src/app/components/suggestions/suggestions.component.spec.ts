@@ -39,6 +39,8 @@ describe('SuggestionsComponent', () => {
       fixture.nativeElement.querySelectorAll('button.tile'),
     );
     expect(tiles.length).toBe(6);
+    // inline SVG must survive Angular's sanitizer (it did not with [innerHTML])
+    expect(fixture.nativeElement.querySelectorAll('.thumb svg').length).toBe(5);
     expect(tiles.map((t) => t.classList.contains('on'))).toEqual([
       false,
       true,

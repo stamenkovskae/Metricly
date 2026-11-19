@@ -21,7 +21,8 @@ import { Block, chipLabel, cssKind, keyOf, blocksOf } from '../palette/blocks';
     .x:hover { opacity: 1; }
     .x:focus-visible { outline: 3px solid var(--look-d); opacity: 1; }
     .slot { border: 2px dashed var(--line); border-radius: 12px; color: var(--muted); padding: 7px 14px; margin-left: 12px; }
-    .tip { margin-left: auto; color: var(--muted); font-size: 12px; }
+    .tip { margin-left: auto; color: var(--muted); font-size: 12px; white-space: nowrap; }
+    @media (max-width: 1100px) { .tip { display: none; } }
   `,
   template: `
     <span class="lead">Show me</span>

@@ -10,7 +10,28 @@
         [attr.aria-pressed]="isActive(p.query)"
         (click)="pick(p.query)"
       >
-        <span class="thumb" [innerHTML]="p.thumb"></span>
+        <span class="thumb">
+          @switch (p.thumb) {
+            @case ('line') {
+              <svg viewBox="0 0 100 44" aria-hidden="true"><path d="M4,34 Q20,18 34,26 T64,14 T96,8" fill="none" stroke="var(--s1)" stroke-width="3.5" stroke-linecap="round" /></svg>
+            }
+            @case ('bars') {
+              <svg viewBox="0 0 100 44" aria-hidden="true"><g fill="var(--s1)"><rect x="8" y="8" width="14" height="36" rx="5"/><rect x="30" y="16" width="14" height="28" rx="5"/><rect x="52" y="24" width="14" height="20" rx="5"/><rect x="74" y="32" width="14" height="12" rx="5"/></g></svg>
+            }
+            @case ('spike') {
+              <svg viewBox="0 0 100 44" aria-hidden="true"><path d="M4,38 L30,36 Q44,34 52,14 T70,34 L96,32" fill="none" stroke="var(--s3)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            }
+            @case ('number') {
+              <div class="big" aria-hidden="true">0.4%</div>
+            }
+            @case ('area') {
+              <svg viewBox="0 0 100 44" aria-hidden="true"><path d="M4,32 Q22,30 36,22 T66,16 T96,8 L96,44 L4,44 Z" fill="oklch(58% 0.12 190 / .2)"/><path d="M4,32 Q22,30 36,22 T66,16 T96,8" fill="none" stroke="var(--s2)" stroke-width="3.5" stroke-linecap="round" /></svg>
+            }
+            @case ('two') {
+              <svg viewBox="0 0 100 44" aria-hidden="true"><path d="M4,14 Q30,10 50,18 T96,12" fill="none" stroke="var(--s1)" stroke-width="3.5" stroke-linecap="round" /><path d="M4,32 Q30,30 50,28 T96,24" fill="none" stroke="var(--s2)" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="1 8"/></svg>
+            }
+          }
+        </span>
         <strong>{{ p.name }}</strong>
         <small>{{ p.blurb }}</small>
       </button>

@@ -6,41 +6,42 @@ const base: ChartQuery = { metric: 'requests', filters: [], look: 'line', rangeM
 const q = (o: Partial<ChartQuery>): ChartQuery => ({ ...base, ...o });
 const C = 'http_server_request_duration_seconds_count';
 const B = 'http_server_request_duration_seconds_bucket';
+const X = 'http_route!="/metrics"';
 
 describe('compile', () => {
   it('requests default to per second', () => {
-    expect(compile(base)).toBe(`sum (rate(${C}[1m]))`);
+    expect(compile(base)).toBe(`sum (rate(${C}{${X}}[1m]))`);
   });
 
   it.each([
-    ['second', `sum (rate(${C}[1m]))`],
-    ['minute', `sum (rate(${C}[5m])) * 60`],
-    ['hour', `sum (rate(${C}[5m])) * 3600`],
+    ['second', `sum (rate(${C}{${X}}[1m]))`],
+    ['minute', `sum (rate(${C}{${X}}[5m])) * 60`],
+    ['hour', `sum (rate(${C}{${X}}[5m])) * 3600`],
   ] as const)('requests per %s', (speed, expected) => {
     expect(compile(q({ speed }))).toBe(expected);
   });
 
   it('requests split by endpoint', () => {
     expect(compile(q({ speed: 'second', splitBy: 'endpoint' }))).toBe(
-      `sum by (http_route) (rate(${C}[1m]))`,
+      `sum by (http_route) (rate(${C}{${X}}[1m]))`,
     );
   });
 
   it('errors split by service', () => {
     expect(compile(q({ metric: 'errors', splitBy: 'service' }))).toBe(
-      `sum by (job) (rate(${C}{http_response_status_code=~"5.."}[1m]))`,
+      `sum by (job) (rate(${C}{http_response_status_code=~"5..",${X}}[1m]))`,
     );
   });
 
   it('errors per minute', () => {
     expect(compile(q({ metric: 'errors', speed: 'minute' }))).toBe(
-      `sum (rate(${C}{http_response_status_code=~"5.."}[5m])) * 60`,
+      `sum (rate(${C}{http_response_status_code=~"5..",${X}}[5m])) * 60`,
     );
   });
 
   it('error rate %', () => {
     expect(compile(q({ metric: 'errorRate' }))).toBe(
-      `100 * sum (rate(${C}{http_response_status_code=~"5.."}[5m])) / sum (rate(${C}[5m]))`,
+      `100 * sum (rate(${C}{http_response_status_code=~"5..",${X}}[5m])) / sum (rate(${C}{${X}}[5m]))`,
     );
   });
 
@@ -50,13 +51,13 @@ describe('compile', () => {
         q({ metric: 'errorRate', splitBy: 'service', filters: [{ by: 'method', value: 'GET' }] }),
       ),
     ).toBe(
-      `100 * sum by (job) (rate(${C}{http_request_method="GET",http_response_status_code=~"5.."}[5m])) / sum by (job) (rate(${C}{http_request_method="GET"}[5m]))`,
+      `100 * sum by (job) (rate(${C}{http_request_method="GET",http_response_status_code=~"5..",${X}}[5m])) / sum by (job) (rate(${C}{http_request_method="GET",${X}}[5m]))`,
     );
   });
 
   it('response time defaults to p95', () => {
     expect(compile(q({ metric: 'responseTime' }))).toBe(
-      `histogram_quantile(0.95, sum by (le) (rate(${B}[5m])))`,
+      `histogram_quantile(0.95, sum by (le) (rate(${B}{${X}}[5m])))`,
     );
   });
 
@@ -72,7 +73,7 @@ describe('compile', () => {
 
   it('response time split by endpoint keeps le', () => {
     expect(compile(q({ metric: 'responseTime', splitBy: 'endpoint' }))).toBe(
-      `histogram_quantile(0.95, sum by (le, http_route) (rate(${B}[5m])))`,
+      `histogram_quantile(0.95, sum by (le, http_route) (rate(${B}{${X}}[5m])))`,
     );
   });
 
@@ -95,7 +96,7 @@ describe('compile', () => {
 
   it('status 5xx becomes a regex', () => {
     expect(compile(q({ filters: [{ by: 'status', value: '5xx' }] }))).toBe(
-      `sum (rate(${C}{http_response_status_code=~"5.."}[1m]))`,
+      `sum (rate(${C}{http_response_status_code=~"5..",${X}}[1m]))`,
     );
   });
 

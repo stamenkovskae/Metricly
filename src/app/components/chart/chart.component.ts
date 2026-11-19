@@ -14,6 +14,7 @@ import {
   BarElement,
   CategoryScale,
   ChartConfiguration,
+  Chart,
   Filler,
   LineController,
   LineElement,
@@ -35,6 +36,13 @@ const fmtNumber = (v: number) => v.toLocaleString(undefined, { maximumFractionDi
 const fmtTime = (t: number) =>
   new Date(t).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
+/** Last non-NaN drawn point of a dataset (NaN = gap), or undefined if hidden/empty. */
+function lastDrawn(chart: Chart, i: number): { x: number; y: number } | undefined {
+  const meta = chart.getDatasetMeta(i);
+  if (meta.hidden) return undefined;
+  return [...meta.data].reverse().find((p) => Number.isFinite(p.y));
+}
+
 /** Direct end-of-line labels (replaces the legend) + dashed hover guide line. */
 const decorations: Plugin = {
   id: 'metriclyDecorations',
@@ -55,9 +63,18 @@ const decorations: Plugin = {
     }
     ctx.font = '600 13px "Bricolage Grotesque", system-ui, sans-serif';
     ctx.textBaseline = 'middle';
-    chart.data.datasets.forEach((ds, i) => {
-      const last = chart.getDatasetMeta(i).data.at(-1);
-      if (!last || chart.getDatasetMeta(i).hidden) return;
+    // label y positions, nudged so labels at least 16px apart never overlap
+    const ends = chart.data.datasets
+      .map((_, i) => ({ i, last: lastDrawn(chart, i) }))
+      .filter((e): e is { i: number; last: { x: number; y: number } } => !!e.last)
+      .sort((a, b) => a.last.y - b.last.y);
+    const labelY = new Map<number, number>();
+    ends.forEach((e, n) => {
+      const prev = n ? labelY.get(ends[n - 1].i)! : -Infinity;
+      labelY.set(e.i, Math.max(e.last.y, prev + 16));
+    });
+    ends.forEach(({ i, last }) => {
+      const ds = chart.data.datasets[i];
       const color = ds.borderColor as string;
       ctx.fillStyle = '#fff';
       ctx.strokeStyle = '#fff';
@@ -69,7 +86,7 @@ const decorations: Plugin = {
       ctx.stroke();
       ctx.fillStyle = INK;
       ctx.textAlign = 'left';
-      ctx.fillText(ds.label ?? '', last.x + 14, last.y);
+      ctx.fillText(ds.label ?? '', last.x + 14, labelY.get(i)!);
     });
     ctx.restore();
   },
@@ -117,7 +134,7 @@ export class ChartComponent {
 
   readonly bigNumber = computed(() => {
     const v = this.series()[0]?.points.at(-1)?.v;
-    return v === undefined ? '–' : fmtNumber(v);
+    return v === undefined || !Number.isFinite(v) ? '–' : fmtNumber(v);
   });
 
   readonly plugins = [decorations];
@@ -135,14 +152,15 @@ export class ChartComponent {
       bars
         ? {
             ...common(s, i),
-            data: s.points.map((p) => p.v),
+            data: s.points.map((p) => (Number.isFinite(p.v) ? p.v : null)),
             backgroundColor: colors[i % colors.length],
             borderRadius: 8,
             borderSkipped: false,
           }
         : {
             ...common(s, i),
-            data: s.points.map((p) => ({ x: p.t, y: p.v })),
+            data: s.points.map((p) => ({ x: p.t, y: Number.isFinite(p.v) ? p.v : NaN })),
+            spanGaps: false,
             borderWidth: 4,
             borderCapStyle: 'round' as const,
             borderJoinStyle: 'round' as const,
@@ -169,7 +187,7 @@ export class ChartComponent {
         responsive: true,
         maintainAspectRatio: false,
         animation: this.reducedMotion() ? false : { duration: 400 },
-        layout: { padding: { right: 130, top: 8 } },
+        layout: { padding: { right: 130, top: 8, bottom: 8 } },
         interaction: { mode: 'index', intersect: false },
         scales: {
           x: bars

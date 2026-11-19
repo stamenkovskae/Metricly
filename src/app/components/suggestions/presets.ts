@@ -4,20 +4,16 @@ export interface Preset {
   name: string;
   blurb: string;
   query: ChartQuery;
-  /** Inline SVG markup for the tile thumbnail (static, trusted). */
-  thumb: string;
+  /** Which mini chart the tile shows (drawn in suggestions.component.html). */
+  thumb: 'line' | 'bars' | 'spike' | 'number' | 'area' | 'two';
 }
-
-const svg = (inner: string) => `<svg viewBox="0 0 100 44" aria-hidden="true">${inner}</svg>`;
-const line = (d: string, c: string, extra = '') =>
-  `<path d="${d}" fill="none" stroke="var(--${c})" stroke-width="3.5" stroke-linecap="round" ${extra}/>`;
 
 export const PRESETS: Preset[] = [
   {
     name: 'Traffic',
     blurb: 'Requests per second',
     query: { metric: 'requests', speed: 'second', filters: [], look: 'line', rangeMinutes: 60 },
-    thumb: svg(line('M4,34 Q20,18 34,26 T64,14 T96,8', 's1')),
+    thumb: 'line',
   },
   {
     name: 'Busiest endpoints',
@@ -30,9 +26,7 @@ export const PRESETS: Preset[] = [
       look: 'bars',
       rangeMinutes: 60,
     },
-    thumb: svg(
-      '<g fill="var(--s1)"><rect x="8" y="8" width="14" height="36" rx="5"/><rect x="30" y="16" width="14" height="28" rx="5"/><rect x="52" y="24" width="14" height="20" rx="5"/><rect x="74" y="32" width="14" height="12" rx="5"/></g>',
-    ),
+    thumb: 'bars',
   },
   {
     name: 'Oops moments',
@@ -45,15 +39,13 @@ export const PRESETS: Preset[] = [
       look: 'line',
       rangeMinutes: 60,
     },
-    thumb: svg(
-      '<path d="M4,38 L30,36 Q44,34 52,14 T70,34 L96,32" fill="none" stroke="var(--s3)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>',
-    ),
+    thumb: 'spike',
   },
   {
     name: 'Error rate',
     blurb: 'Big number, last 5 minutes',
     query: { metric: 'errorRate', filters: [], look: 'number', rangeMinutes: 5 },
-    thumb: '<div class="big" aria-hidden="true">0.4%</div>',
+    thumb: 'number',
   },
   {
     name: 'Slowest pages',
@@ -66,10 +58,7 @@ export const PRESETS: Preset[] = [
       look: 'area',
       rangeMinutes: 60,
     },
-    thumb: svg(
-      '<path d="M4,32 Q22,30 36,22 T66,16 T96,8 L96,44 L4,44 Z" fill="oklch(58% 0.12 190 / .2)"/>' +
-        line('M4,32 Q22,30 36,22 T66,16 T96,8', 's2'),
-    ),
+    thumb: 'area',
   },
   {
     name: 'Orders vs Users',
@@ -82,10 +71,7 @@ export const PRESETS: Preset[] = [
       look: 'line',
       rangeMinutes: 60,
     },
-    thumb: svg(
-      line('M4,14 Q30,10 50,18 T96,12', 's1') +
-        line('M4,32 Q30,30 50,28 T96,24', 's2', 'stroke-dasharray="1 8"'),
-    ),
+    thumb: 'two',
   },
 ];
 

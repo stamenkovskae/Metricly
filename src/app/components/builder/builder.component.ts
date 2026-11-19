@@ -8,6 +8,7 @@ import {
   viewChild,
 } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { EMPTY, Subject, catchError, debounceTime, finalize, map, merge, switchMap, tap } from 'rxjs';
 import { ChartSeries } from '../../chart/chart-series';
@@ -15,6 +16,8 @@ import { describe } from '../../query/describe';
 import { QueryApi } from '../../query/query-api';
 import { ChartComponent } from '../chart/chart.component';
 import { SaveDialogComponent } from './save-dialog/save-dialog.component';
+import { recipeId } from '../home/recipe-id';
+import { PRESETS } from '../suggestions/presets';
 import { SuggestionsComponent } from '../suggestions/suggestions.component';
 import { CanvasComponent } from './canvas/canvas.component';
 import { PaletteComponent } from './palette/palette.component';
@@ -70,6 +73,10 @@ export class BuilderComponent {
   constructor() {
     // ponytail: prerender never has a query, but keep fetch out of the server path regardless.
     if (!isPlatformBrowser(inject(PLATFORM_ID))) return;
+    // Home links here with ?recipe=<id>: load that preset once; unknown ids are ignored.
+    const recipe = inject(ActivatedRoute, { optional: true })?.snapshot.queryParamMap.get('recipe');
+    const preset = PRESETS.find((p) => recipeId(p.name) === recipe);
+    if (preset) this.state.load(structuredClone(preset.query));
     merge(
       toObservable(this.state.query).pipe(debounceTime(250)),
       this.retry$.pipe(map(() => this.state.query())),
