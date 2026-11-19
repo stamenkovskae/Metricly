@@ -1,59 +1,51 @@
 # Metricly
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.1.5.
+Prometheus charts without writing PromQL. Snap together plain-language blocks ("Requests, per minute, by endpoint") and get a live chart. The generated PromQL stays one click away so you can learn it.
 
-## Development server
+See [`PRODUCT.md`](PRODUCT.md) for users, purpose and design principles.
 
-To start a local development server, run:
+## Stack
 
-```bash
-ng serve
-```
+Angular 22 (standalone components, SSR + hydration), Tailwind CSS v4 + DaisyUI v5, Chart.js via ng2-charts, Express for the SSR server and the `/api/query` proxy. Tests run on Vitest.
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## Getting started
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+Requires Node 20+ and a reachable Prometheus.
 
 ```bash
-ng generate component component-name
+npm install
+npm start        # http://localhost:4300
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+The dev server runs on port **4300**, not the Angular default 4200.
 
-```bash
-ng generate --help
+## Configuration
+
+| Variable | Purpose |
+|---|---|
+| `PROMETHEUS_URL` | Prometheus base URL that `POST /api/query` forwards queries to (see `src/server.ts`). |
+
+## Scripts
+
+| Command | What it does |
+|---|---|
+| `npm start` | Dev server with live reload |
+| `npm run build` | Production build (SSR output in `dist/metricly/`) |
+| `npm run watch` | Dev-configuration watch build |
+| `npm run serve:ssr:metricly` | Run the built SSR Express server |
+| `npm test` | Unit tests (Vitest, jsdom) |
+| `npm run lint` | angular-eslint + eslint for CSS, JSON and Markdown |
+
+## Project layout
+
+```
+src/
+  server.ts            Express SSR entry and /api/query proxy
+  app/
+    components/        builder, chart, dashboards, home, suggestions
+    query/             block model → PromQL compiler, plain-language descriptions, API client
+    chart/             chart series mapping
+    dashboards/        saved dashboard store
 ```
 
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+All routes are prerendered, so avoid browser-only APIs (`window`, `localStorage`) at component init.
