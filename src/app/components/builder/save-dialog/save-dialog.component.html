@@ -1,0 +1,32 @@
+<dialog #dlg aria-labelledby="save-title">
+  <form (submit)="$event.preventDefault(); save()">
+    <h2 id="save-title">Save to dashboard</h2>
+
+    <label>
+      Chart name
+      <input type="text" name="title" [value]="title()" (input)="title.set(val($event))" />
+    </label>
+
+    <label>
+      Dashboard
+      <select name="target" [value]="target()" (change)="target.set(val($event))">
+        @for (d of store.dashboards(); track d.id) {
+          <option [value]="d.id" [selected]="target() === d.id">{{ d.name }}</option>
+        }
+        <option [value]="NEW" [selected]="target() === NEW">New dashboard…</option>
+      </select>
+    </label>
+
+    @if (target() === NEW) {
+      <label>
+        New dashboard name
+        <input type="text" name="newName" placeholder="e.g. Checkout health" [value]="newName()" (input)="newName.set(val($event))" />
+      </label>
+    }
+
+    <div class="actions">
+      <button type="button" class="ghost" (click)="close()">Cancel</button>
+      <button type="submit" class="btn" [disabled]="!canSave()">Save to dashboard</button>
+    </div>
+  </form>
+</dialog>

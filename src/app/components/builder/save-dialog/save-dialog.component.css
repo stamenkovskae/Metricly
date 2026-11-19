@@ -1,0 +1,33 @@
+dialog {
+  margin: auto;
+  border: 2px solid var(--line);
+  border-radius: 18px;
+  padding: 22px 24px;
+  background: var(--surface);
+  color: var(--ink);
+  width: min(420px, calc(100vw - 32px));
+}
+dialog::backdrop {
+  background: oklch(22% 0.04 270 / 0.45);
+}
+h2 { font-size: 18px; font-weight: 800; margin-bottom: 14px; }
+label { display: block; font-weight: 600; font-size: 13px; margin-bottom: 12px; }
+input, select {
+  display: block;
+  width: 100%;
+  margin-top: 4px;
+  font: inherit;
+  padding: 8px 12px;
+  border: 2px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--ink);
+}
+input:focus-visible, select:focus-visible, button:focus-visible { outline: 3px solid var(--look-d); outline-offset: 2px; }
+.actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 18px; }
+.btn {
+  font: inherit; font-weight: 600; border: 0; border-radius: 14px; padding: 8px 18px;
+  background: var(--ink); color: white; box-shadow: 0 3px 0 oklch(10% 0.03 270); cursor: pointer;
+}
+.btn:disabled { opacity: 0.45; cursor: not-allowed; box-shadow: none; }
+.ghost { font: inherit; font-weight: 600; background: none; border: 0; color: var(--muted); cursor: pointer; padding: 8px 14px; border-radius: 14px; }

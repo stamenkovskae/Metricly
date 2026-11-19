@@ -1,0 +1,16 @@
+.head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+h2 { font-size: 18px; font-weight: 800; }
+.dash { margin-bottom: 26px; }
+.dash > header, .card > header { display: flex; align-items: center; gap: 10px; }
+.dash h3 { font-size: 16px; font-weight: 800; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(420px, 1fr)); gap: 16px; margin-top: 10px; }
+.card { background: var(--surface); border: 2px solid var(--line); border-radius: 18px; padding: 12px 16px 14px; min-width: 0; }
+.card h4 { font-weight: 700; font-size: 14px; }
+.card .ghost, .dash > header .ghost { margin-left: auto; }
+.ghost { font: inherit; font-size: 12px; font-weight: 600; background: none; border: 0; color: var(--muted); cursor: pointer; padding: 4px 8px; border-radius: 10px; }
+.ghost:hover { color: var(--ink); background: var(--panel); }
+.btn { display: inline-block; font-weight: 600; text-decoration: none; border-radius: 14px; padding: 8px 18px; background: var(--ink); color: white; box-shadow: 0 3px 0 oklch(10% 0.03 270); }
+.btn:focus-visible, .ghost:focus-visible, a:focus-visible { outline: 3px solid var(--look-d); outline-offset: 2px; }
+.muted { color: var(--muted); margin-top: 8px; }
+.empty { max-width: 52ch; display: grid; gap: 10px; justify-items: start; padding: 28px; border: 2px dashed var(--line); border-radius: 18px; }
+.empty ol { padding-left: 20px; list-style: decimal; display: grid; gap: 4px; }

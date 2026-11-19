@@ -5,6 +5,7 @@ import {
   computed,
   inject,
   signal,
+  viewChild,
 } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
@@ -13,6 +14,7 @@ import { ChartSeries } from '../../chart/chart-series';
 import { describe } from '../../query/describe';
 import { QueryApi } from '../../query/query-api';
 import { ChartComponent } from '../chart/chart.component';
+import { SaveDialogComponent } from './save-dialog/save-dialog.component';
 import { SuggestionsComponent } from '../suggestions/suggestions.component';
 import { CanvasComponent } from './canvas/canvas.component';
 import { PaletteComponent } from './palette/palette.component';
@@ -29,7 +31,7 @@ const cap = (s: string) => s[0].toUpperCase() + s.slice(1);
 /** The builder page: blocks in, chart out. Re-queries (debounced, cancelling) whenever the query changes. */
 @Component({
   selector: 'app-builder',
-  imports: [PaletteComponent, CanvasComponent, ChartComponent, SuggestionsComponent],
+  imports: [PaletteComponent, CanvasComponent, ChartComponent, SuggestionsComponent, SaveDialogComponent],
   templateUrl: './builder.component.html',
   styleUrl: './builder.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -97,6 +99,13 @@ export class BuilderComponent {
         takeUntilDestroyed(),
       )
       .subscribe();
+  }
+
+  protected readonly savedTo = signal('');
+  private readonly saveDialog = viewChild(SaveDialogComponent);
+
+  protected openSave() {
+    this.saveDialog()?.open();
   }
 
   protected setRange(rangeMinutes: number) {

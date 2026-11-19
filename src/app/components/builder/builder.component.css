@@ -107,3 +107,19 @@
   font-size: 13px;
   color: var(--muted);
 }
+.bar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+.bar h2 { font-size: 18px; font-weight: 800; }
+.saved { margin-left: auto; color: var(--muted); font-weight: 600; }
+.bar .btn { margin-left: auto; }
+.saved + .btn { margin-left: 0; }
+.btn {
+  font: inherit; font-weight: 600; border: 0; border-radius: 14px; padding: 8px 18px;
+  background: var(--ink); color: white; box-shadow: 0 3px 0 oklch(10% 0.03 270); cursor: pointer;
+}
+.btn:disabled { opacity: 0.45; cursor: not-allowed; box-shadow: none; }
+.btn:focus-visible { outline: 3px solid var(--look-d); outline-offset: 2px; }

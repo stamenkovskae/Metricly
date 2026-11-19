@@ -1,3 +1,14 @@
+<header class="bar">
+  <h2>New chart</h2>
+  @if (savedTo()) {
+    <span class="saved" role="status">Saved to {{ savedTo() }}</span>
+  }
+  <button type="button" class="btn" [disabled]="!state.query()" (click)="openSave()">Save to dashboard</button>
+</header>
+@if (state.query(); as q) {
+  <app-save-dialog [query]="q" (saved)="savedTo.set($event)" />
+}
+
 <div class="builder">
   <app-palette class="palette" aria-label="Blocks" />
 

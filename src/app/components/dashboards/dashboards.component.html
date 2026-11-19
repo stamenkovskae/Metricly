@@ -1,1 +1,39 @@
-<p>dashboards.component works!</p>
+@if (store.dashboards().length) {
+  <div class="head">
+    <h2>Your dashboards</h2>
+    <a routerLink="/builder" class="btn">New chart</a>
+  </div>
+  @for (d of store.dashboards(); track d.id) {
+    <section class="dash" [attr.aria-label]="d.name">
+      <header>
+        <h3>{{ d.name }}</h3>
+        <button type="button" class="ghost" (click)="removeDashboard(d.id, d.name)">Delete dashboard</button>
+      </header>
+      @if (d.charts.length) {
+        <div class="grid">
+          @for (c of d.charts; track c.id) {
+            <article class="card">
+              <header>
+                <h4>{{ c.title }}</h4>
+                <button type="button" class="ghost" [attr.aria-label]="'Delete chart ' + c.title" (click)="store.deleteChart(d.id, c.id)">Delete</button>
+              </header>
+              <app-saved-chart [query]="c.query" />
+            </article>
+          }
+        </div>
+      } @else {
+        <p class="muted">No charts here yet. <a routerLink="/builder">Build one</a> and save it to "{{ d.name }}".</p>
+      }
+    </section>
+  }
+} @else {
+  <section class="empty">
+    <h2>No dashboards yet</h2>
+    <p>A dashboard is a page of charts you want to keep an eye on.</p>
+    <ol>
+      <li>Open the chart builder and click a block, like <em>Requests</em>.</li>
+      <li>Press <strong>Save to dashboard</strong> and give the dashboard a name.</li>
+    </ol>
+    <a routerLink="/builder" class="btn">Make your first chart</a>
+  </section>
+}
