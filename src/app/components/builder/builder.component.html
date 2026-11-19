@@ -1,0 +1,57 @@
+<div class="builder">
+  <app-palette class="palette" aria-label="Blocks" />
+
+  <div class="center">
+    <app-canvas />
+
+    @if (state.query(); as q) {
+      <section class="chart-card" [attr.aria-label]="title()" [attr.aria-busy]="loading()">
+        <div class="chart-head">
+          <h2>{{ title() }}</h2>
+          @if (q.splitBy) {
+            <span>by {{ q.splitBy }}</span>
+          }
+          <div class="seg" role="group" aria-label="Time range">
+            @for (r of ranges; track r.minutes) {
+              <button
+                type="button"
+                [class.on]="q.rangeMinutes === r.minutes"
+                [attr.aria-pressed]="q.rangeMinutes === r.minutes"
+                (click)="setRange(r.minutes)"
+              >
+                {{ r.label }}
+              </button>
+            }
+          </div>
+        </div>
+        <div class="chart-box" [class.stale]="loading() && !skeleton()">
+          <app-chart
+            [series]="series()"
+            [look]="q.look"
+            [unit]="unit()"
+            [loading]="skeleton()"
+            [error]="error()"
+            (retry)="retry()"
+          />
+        </div>
+      </section>
+
+      <p class="says">{{ describe(q) }}.</p>
+
+      @if (promql()) {
+        <details class="peek">
+          <summary>Peek behind the curtain</summary>
+          <code>{{ promql() }}</code>
+          <p>That's the PromQL Metricly wrote for you. Handy if you ever want to learn it.</p>
+        </details>
+      }
+    } @else {
+      <section class="chart-card empty" aria-label="Chart preview">
+        <p><strong>Drag a block here, or click one to start</strong></p>
+        <p>Pick <em>Requests</em> on the left and your chart appears.</p>
+      </section>
+    }
+
+    <app-suggestions [activeQuery]="state.query()" (picked)="state.load($event)" />
+  </div>
+</div>

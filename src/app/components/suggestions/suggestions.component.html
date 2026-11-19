@@ -1,0 +1,19 @@
+<section class="sugg" aria-label="Suggested charts">
+  <h2>Not sure where to start?</h2>
+  <p>Click a recipe and tweak the blocks.</p>
+  <div class="tiles">
+    @for (p of presets; track p.name) {
+      <button
+        type="button"
+        class="tile"
+        [class.on]="isActive(p.query)"
+        [attr.aria-pressed]="isActive(p.query)"
+        (click)="pick(p.query)"
+      >
+        <span class="thumb" [innerHTML]="p.thumb"></span>
+        <strong>{{ p.name }}</strong>
+        <small>{{ p.blurb }}</small>
+      </button>
+    }
+  </div>
+</section>

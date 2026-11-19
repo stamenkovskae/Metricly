@@ -1,0 +1,109 @@
+.builder {
+  display: grid;
+  grid-template-columns: 250px minmax(0, 1fr);
+  gap: 22px;
+  align-items: start;
+}
+.palette {
+  border-radius: 18px;
+  border: 2px solid var(--line);
+}
+.center {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+.chart-card {
+  background: var(--surface);
+  border: 2px solid var(--line);
+  border-radius: 18px;
+  padding: 14px 18px 12px;
+}
+.chart-card.empty {
+  min-height: 330px;
+  display: grid;
+  place-content: center;
+  text-align: center;
+  gap: 4px;
+  color: var(--muted);
+  border-style: dashed;
+}
+.chart-card.empty strong {
+  color: var(--ink);
+  font-size: 18px;
+}
+.chart-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.chart-head h2 {
+  font-size: 16px;
+  font-weight: 800;
+}
+.chart-head span {
+  color: var(--muted);
+}
+.seg {
+  margin-left: auto;
+  display: flex;
+  background: var(--panel);
+  border-radius: 12px;
+  padding: 3px;
+  gap: 2px;
+}
+.seg button {
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  background: none;
+  border: 0;
+  cursor: pointer;
+  padding: 4px 12px;
+  border-radius: 9px;
+}
+.seg button.on {
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: 0 1px 0 var(--line);
+}
+.seg button:focus-visible {
+  outline: 3px solid var(--look-d);
+}
+/* fixed height so the layout never jumps between loading / empty / ready */
+.chart-box {
+  height: 300px;
+  transition: opacity 0.15s;
+}
+.chart-box.stale {
+  opacity: 0.55;
+}
+.says {
+  font-size: 15px;
+  max-width: 70ch;
+  line-height: 1.5;
+}
+.peek summary {
+  cursor: pointer;
+  font-weight: 600;
+  width: fit-content;
+  padding: 4px 0;
+}
+.peek code {
+  display: block;
+  margin-top: 8px;
+  padding: 10px 14px;
+  background: var(--ink);
+  color: oklch(95% 0.02 250);
+  border-radius: 12px;
+  font: 12.5px ui-monospace, Menlo, monospace;
+  overflow-x: auto;
+}
+.peek p {
+  margin-top: 6px;
+  font-size: 13px;
+  color: var(--muted);
+}

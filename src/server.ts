@@ -6,11 +6,29 @@ import {
 } from '@angular/ssr/node';
 import express from 'express';
 import { join } from 'node:path';
+import { runQuery } from './server/query-proxy';
 
 const browserDistFolder = join(import.meta.dirname, '../browser');
 
 const app = express();
 const angularApp = new AngularNodeAppEngine();
+
+app.post('/api/query', express.json({ limit: '10kb' }), async (req, res) => {
+  const { status, body } = await runQuery(
+    req.body,
+    fetch,
+    Date.now(),
+    process.env['PROMETHEUS_URL'],
+  );
+  res.status(status).json(body);
+});
+
+// Bad JSON bodies -> plain 400 instead of an HTML stack trace.
+app.use(
+  '/api',
+  (err: unknown, _req: express.Request, res: express.Response, next: express.NextFunction) =>
+    err ? res.status(400).json({ error: 'Invalid JSON body.' }) : next(),
+);
 
 /**
  * Example Express Rest API endpoints can be defined here.

@@ -1,0 +1,32 @@
+<div class="chart" [attr.data-state]="state()">
+  @switch (state()) {
+    @case ('loading') {
+      <div class="skeleton" role="status" aria-label="Loading chart"></div>
+    }
+    @case ('error') {
+      <div class="message" role="alert">
+        <p>Something went wrong: {{ error() }}</p>
+        <button type="button" class="btn btn-sm" (click)="retry.emit()">Try again</button>
+      </div>
+    }
+    @case ('empty') {
+      <div class="message"><p>No data yet. Is your API getting traffic?</p></div>
+    }
+    @default {
+      @if (look() === 'number') {
+        <div class="big" role="img" [attr.aria-label]="bigNumber() + ' ' + unit()">
+          <strong>{{ bigNumber() }}</strong>
+          <span>{{ unit() }}</span>
+        </div>
+      } @else {
+        <canvas
+          baseChart
+          [type]="config().type"
+          [data]="config().data"
+          [options]="config().options"
+          [plugins]="plugins"
+        ></canvas>
+      }
+    }
+  }
+</div>
