@@ -1,9 +1,11 @@
 import { Routes } from '@angular/router';
 import { HomeComponent } from './components/home/home.component';
 import { DashboardsComponent } from './components/dashboards/dashboards.component';
+import { BuilderComponent } from './components/builder/builder.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: '/home', pathMatch: 'full'},
     { path: 'home', component: HomeComponent },
-    { path: 'dashboards', component: DashboardsComponent }
+    { path: 'dashboards', component: DashboardsComponent },
+    { path: 'builder', component: BuilderComponent, title: 'New chart' }
 ];

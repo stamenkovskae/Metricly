@@ -1,5 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&display=swap');
 @import 'tailwindcss';
 @plugin "daisyui";
 
@@ -148,3 +149,104 @@
   --noise: 0;
 }
  */
+
+/* ---- Metricly playful design tokens (from metrics-builder.mockup.html) ---- */
+:root {
+  --bg: oklch(97.5% 0.01 250);
+  --panel: oklch(95% 0.015 250);
+  --surface: oklch(100% 0 0);
+  --line: oklch(89% 0.02 250);
+  --ink: oklch(22% 0.04 270);
+  --muted: oklch(45% 0.04 270);
+
+  /* block kinds: fill / sticker-shadow */
+  --metric: oklch(73% 0.17 28);
+  --metric-d: oklch(57% 0.18 28);
+  --speed: oklch(89% 0.15 95);
+  --speed-d: oklch(72% 0.14 88);
+  --filter: oklch(76% 0.12 305);
+  --filter-d: oklch(60% 0.15 305);
+  --split: oklch(83% 0.12 175);
+  --split-d: oklch(65% 0.12 175);
+  --look: oklch(81% 0.1 245);
+  --look-d: oklch(63% 0.13 245);
+
+  /* chart series */
+  --s1: oklch(62% 0.2 28);
+  --s2: oklch(58% 0.12 190);
+  --s3: oklch(55% 0.18 300);
+
+  --font: 'Bricolage Grotesque', ui-rounded, 'SF Pro Rounded', system-ui, sans-serif;
+}
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--ink);
+}
+
+/* The block: a chunky tile. Later tasks only add .blk + .k-<kind>. */
+.blk {
+  position: relative;
+  font: inherit;
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--ink);
+  border: 0;
+  border-radius: 12px;
+  padding: 7px 14px;
+  cursor: grab;
+  transition:
+    transform 0.15s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.15s;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.blk:hover {
+  transform: translateY(-2px) rotate(-1deg);
+}
+.blk:active {
+  cursor: grabbing;
+  transform: translateY(2px);
+}
+.blk:focus-visible {
+  outline: 3px solid var(--look-d);
+  outline-offset: 2px;
+}
+.k-metric {
+  background: var(--metric);
+  box-shadow: 0 3px 0 var(--metric-d);
+}
+.k-speed {
+  background: var(--speed);
+  box-shadow: 0 3px 0 var(--speed-d);
+}
+.k-filter {
+  background: var(--filter);
+  box-shadow: 0 3px 0 var(--filter-d);
+}
+.k-split {
+  background: var(--split);
+  box-shadow: 0 3px 0 var(--split-d);
+}
+.k-look {
+  background: var(--look);
+  box-shadow: 0 3px 0 var(--look-d);
+}
+.blk.used {
+  opacity: 0.55;
+}
+.blk.used::after {
+  content: '✓';
+  font-size: 11px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blk,
+  .blk:hover,
+  .blk:active {
+    transition: none;
+    transform: none;
+  }
+}
