@@ -8,7 +8,7 @@ product
 Developers, students and small-team engineers who have metrics flowing from their services but find Grafana and PromQL intimidating. They are mid-task: "is my API okay, and what is it doing right now?" They want an answer in seconds, not a query-language course.
 
 ## Product Purpose
-Metricly turns Prometheus metrics into charts by snapping together plain-language blocks (Requests, per minute, by endpoint) instead of writing PromQL. Every block change redraws the chart instantly, and the generated PromQL stays one click away so people can learn it. Success: a first-time user has a useful chart within a minute without reading docs.
+Simplana turns Prometheus metrics into charts by snapping together plain-language blocks (Requests, per minute, by endpoint) instead of writing PromQL. Every block change redraws the chart instantly, and the generated PromQL stays one click away so people can learn it. Success: a first-time user has a useful chart within a minute without reading docs.
 
 ## Brand Personality
 Friendly, bright, tactile. Talks like a helpful friend, not a manual. Blocks feel like physical pieces that click together. Confident saturated colour, never corporate grey.

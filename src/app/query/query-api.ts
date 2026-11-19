@@ -34,7 +34,7 @@ export class QueryApi {
         })
         .catch((e) => {
           if (abort.signal.aborted) return;
-          sub.error(e instanceof TypeError ? new Error("Can't reach the Metricly server.") : e);
+          sub.error(e instanceof TypeError ? new Error("Can't reach the Simplana server.") : e);
         });
       return () => abort.abort();
     });

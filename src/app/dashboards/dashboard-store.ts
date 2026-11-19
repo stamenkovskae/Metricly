@@ -13,7 +13,7 @@ export interface Dashboard {
   charts: SavedChart[];
 }
 
-export const STORAGE_KEY = 'metricly.dashboards.v1';
+export const STORAGE_KEY = 'simplana.dashboards.v1';
 /** localStorage can be missing or throw (sandboxed iframes, privacy modes); treat that as "no storage". */
 function storage(): Storage | null {
   try {

@@ -7,7 +7,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "metricly": {
+    "simplana": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -66,10 +66,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "metricly:build:production"
+              "buildTarget": "simplana:build:production"
             },
             "development": {
-              "buildTarget": "metricly:build:development"
+              "buildTarget": "simplana:build:development"
             }
           },
           "defaultConfiguration": "development"

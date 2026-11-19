@@ -5,16 +5,16 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Commands
 
 - `npm start` — dev server (`ng serve`) on **port 4300** (overridden in `angular.json`, not the default 4200)
-- `npm run build` — production build (SSR output in `dist/metricly/`); `npm run watch` for dev-config watch build
+- `npm run build` — production build (SSR output in `dist/simplana/`); `npm run watch` for dev-config watch build
 - `npm run lint` — `ng lint` (angular-eslint + eslint for css/json/markdown)
 - `npm test` — `ng test` (Vitest via Angular builder, jsdom); single file: `ng test --include src/app/components/home/home.spec.ts`
-- `npm run serve:ssr:metricly` — run the built SSR Express server
+- `npm run serve:ssr:simplana` — run the built SSR Express server
 
 Prettier: 100 cols, single quotes, `angular` parser for `.html`.
 
 ## Architecture
 
-Metricly is a Grafana-style dashboard app (early stage). Angular 22 with **standalone components** (no NgModules), SSR + client hydration:
+Simplana is a Grafana-style dashboard app (early stage). Angular 22 with **standalone components** (no NgModules), SSR + client hydration:
 
 - `src/main.ts` / `src/main.server.ts` / `src/server.ts` — browser bootstrap, server bootstrap, Express SSR entry (`outputMode: "server"`).
 - `src/app/app.config.ts` (browser providers: router, hydration) and `app.config.server.ts` (server overrides).

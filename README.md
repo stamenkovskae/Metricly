@@ -1,4 +1,4 @@
-# Metricly
+# Simplana
 
 Prometheus charts without writing PromQL. Snap together plain-language blocks ("Requests, per minute, by endpoint") and get a live chart. The generated PromQL stays one click away so you can learn it.
 
@@ -30,9 +30,9 @@ The dev server runs on port **4300**, not the Angular default 4200.
 | Command | What it does |
 |---|---|
 | `npm start` | Dev server with live reload |
-| `npm run build` | Production build (SSR output in `dist/metricly/`) |
+| `npm run build` | Production build (SSR output in `dist/simplana/`) |
 | `npm run watch` | Dev-configuration watch build |
-| `npm run serve:ssr:metricly` | Run the built SSR Express server |
+| `npm run serve:ssr:simplana` | Run the built SSR Express server |
 | `npm test` | Unit tests (Vitest, jsdom) |
 | `npm run lint` | angular-eslint + eslint for CSS, JSON and Markdown |
 

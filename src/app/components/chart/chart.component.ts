@@ -45,7 +45,7 @@ function lastDrawn(chart: Chart, i: number): { x: number; y: number } | undefine
 
 /** Direct end-of-line labels (replaces the legend) + dashed hover guide line. */
 const decorations: Plugin = {
-  id: 'metriclyDecorations',
+  id: 'simplanaDecorations',
   afterDatasetsDraw(chart) {
     const { ctx, chartArea, tooltip } = chart;
     ctx.save();
