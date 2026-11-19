@@ -74,3 +74,4 @@ code { font-family: ui-monospace, 'SF Mono', Menlo, monospace; font-size: 12.5px
   .cta, .thumb :is(svg, .big) { transition: none; }
   .cta:hover, .cta:active, .recipe:hover .thumb :is(svg, .big) { transform: none; }
 }
+.brand { display: block; height: 40px; width: auto; margin-bottom: 16px; }

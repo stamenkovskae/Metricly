@@ -1,5 +1,7 @@
 # Simplana
 
+![Simplana cover](src/images/cover.png)
+
 Prometheus charts without writing PromQL. Snap together plain-language blocks ("Requests, per minute, by endpoint") and get a live chart. The generated PromQL stays one click away so you can learn it.
 
 See [`PRODUCT.md`](PRODUCT.md) for users, purpose and design principles.
