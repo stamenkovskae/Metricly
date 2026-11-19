@@ -1,0 +1,10 @@
+.shell { display: flex; min-height: 100vh; }
+.rail { width: 60px; background: var(--panel); border-right: 2px solid var(--line); display: flex; flex-direction: column; align-items: center; gap: 10px; padding-top: 14px; }
+.logo { width: 36px; height: 36px; border-radius: 12px; background: var(--metric); box-shadow: 0 3px 0 var(--metric-d); display: grid; place-items: center; font-weight: 800; font-size: 18px; margin-bottom: 8px; }
+.rail a { width: 36px; height: 36px; border-radius: 12px; display: grid; place-items: center; color: var(--muted); font-size: 17px; text-decoration: none; }
+.rail a.on { background: var(--surface); color: var(--ink); box-shadow: 0 2px 0 var(--line); }
+.rail a:focus-visible { outline: 3px solid var(--look-d); outline-offset: 2px; }
+.main { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+.top { height: 56px; display: flex; align-items: center; gap: 14px; padding: 0 22px; border-bottom: 2px solid var(--line); }
+.top h1 { font-size: 18px; font-weight: 800; }
+.page { flex: 1; padding: 18px 26px; }
